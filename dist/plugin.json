@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Map Select Panel",
+  "id": "map-select-panel",
+  "info": {
+    "description": "",
+    "author": {
+      "name": "arrisde",
+      "url": "https://github.com/arrisde/map-select-panel"
+    },
+    "keywords": [],
+    "logos": {
+      "small": "img/map.svg",
+      "large": "img/map.svg"
+    },
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "2021-04-07"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=7.0.0",
+    "plugins": []
+  }
+}
