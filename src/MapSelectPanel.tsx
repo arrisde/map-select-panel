@@ -45,6 +45,11 @@ export const MapSelectPanel: React.FC<Props> = ({ options, data, width, height, 
     ?.fields.find((f) => f.name === 'Value')
     ?.values?.toArray();
 
+  let markers: number[] | undefined = data.series
+    .find((f) => f.name === 'marker')
+    ?.fields.find((f) => f.name === 'Value')
+    ?.values?.toArray();
+
   if (!locations && data.series?.length) {
     locations = data.series[0].fields.find((f) => f.name === 'location')?.values.toArray();
   }
@@ -55,6 +60,10 @@ export const MapSelectPanel: React.FC<Props> = ({ options, data, width, height, 
 
   if (!ids && data.series?.length) {
     ids = data.series[0].fields.find((f) => f.name === 'id')?.values.toArray();
+  }
+
+  if (!markers && data.series?.length) {
+    markers = data.series[0].fields.find((f) => f.name === 'marker')?.values.toArray();
   }
 
   let geoFeatures: Feature[] = [];
@@ -69,6 +78,7 @@ export const MapSelectPanel: React.FC<Props> = ({ options, data, width, height, 
           popup: popups !== undefined ? popups[i] : undefined,
           selected: ids !== undefined ? ids[i] === selectedVar : false,
           id: ids !== undefined ? ids[i] : undefined,
+          marker: markers !== undefined ? markers[i] : 0
         },
       });
     }
@@ -136,7 +146,7 @@ export const MapSelectPanel: React.FC<Props> = ({ options, data, width, height, 
   const pointToLayer = (geoJsonPoint: Feature<Point, GeoJsonProperties>, latlng: LatLng): Layer => {
     return marker(latlng, {
       icon: createIcon(
-        primaryIcon,
+        geoJsonPoint.properties?.marker != 0 ? secondaryIcon : primaryIcon,
         geoJsonPoint.properties?.selected ? options.marker.highlightSize : options.marker.size
       ),
     });
