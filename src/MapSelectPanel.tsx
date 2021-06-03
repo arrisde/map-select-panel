@@ -108,12 +108,14 @@ export const MapSelectPanel: React.FC<Props> = ({ options, data, width, height, 
     if (features?.length > 0) {
       features.forEach((p, i) => {
         let name = p.properties?.popup as string;
+        let id = p.properties?.id as string;
+        let hash = stringHash(id);
         if (p.properties?.id === selectedVar) {
-          i += features.length;
+          hash = stringHash(id + "_SELECTED");
         }
         markers.push(
           <GeoJSON
-            key={i}
+            key={hash}
             data={p}
             // onEachFeature={onEachFeature}
             pointToLayer={pointToLayer}
@@ -133,6 +135,17 @@ export const MapSelectPanel: React.FC<Props> = ({ options, data, width, height, 
       iconAnchor: [size * 0.5, size],
       popupAnchor: [0, -size],
     });
+  };
+
+  const stringHash = (input: string): number => {
+      var hash = 0, i, chr;
+      if (input.length === 0) return hash;
+      for (i = 0; i < input.length; i++) {
+        chr   = input.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+      }
+      return hash;
   };
 
   /// TODO: Popups don't work well with changing the feature style on selecting, as changing
